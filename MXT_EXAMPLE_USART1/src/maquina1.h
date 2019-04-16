@@ -11,6 +11,7 @@ struct ciclo{
 	int  centrifugacaoTempo; // tempo que centrifuga
 	char heavy;              // modo pesado de lavagem
 	char bubblesOn;          // smart bubbles on (???)
+	int id;
 	t_ciclo *previous;
 	t_ciclo *next;
 };
@@ -21,7 +22,8 @@ t_ciclo c_rapido = {.nome = "Rapido",
 	.centrifugacaoRPM = 900,
 	.centrifugacaoTempo = 5,
 	.heavy = 0,
-	.bubblesOn = 1
+	.bubblesOn = 1,
+	.id = 0
 };
 
 t_ciclo c_diario = {.nome = "Diario",
@@ -31,6 +33,7 @@ t_ciclo c_diario = {.nome = "Diario",
 	.centrifugacaoTempo = 8,
 	.heavy = 0,
 	.bubblesOn = 1,
+	.id = 1
 };
 
 t_ciclo c_pesado = {.nome = "Pesado",
@@ -40,6 +43,7 @@ t_ciclo c_pesado = {.nome = "Pesado",
 	.centrifugacaoTempo = 10,
 	.heavy = 1,
 	.bubblesOn = 1,
+	.id = 2
 };
 
 t_ciclo c_enxague = {.nome = "Enxague",
@@ -49,6 +53,7 @@ t_ciclo c_enxague = {.nome = "Enxague",
 	.centrifugacaoTempo = 0,
 	.heavy = 0,
 	.bubblesOn = 0,
+	.id = 3
 };
 
 t_ciclo c_centrifuga = {.nome = "Centrifuga",
@@ -58,6 +63,17 @@ t_ciclo c_centrifuga = {.nome = "Centrifuga",
 	.centrifugacaoTempo = 10,
 	.heavy = 0,
 	.bubblesOn = 0,
+	.id = 4
+};
+
+t_ciclo c_custom = {.nome = "custom",
+	.enxagueTempo = 0,
+	.enxagueQnt = 0,
+	.centrifugacaoRPM = 1200,
+	.centrifugacaoTempo = 10,
+	.heavy = 0,
+	.bubblesOn = 0,
+	.id = 5
 };
 
 
