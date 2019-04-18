@@ -9640,7 +9640,7 @@ OUTPUT(MXT_EXAMPLE_USART1.elf elf32-littlearm)
  .comment       0x00000059       0x5a src/ASF/sam/utils/syscalls/gcc/syscalls.o
  .comment       0x00000059       0x5a src/main.o
 
-.debug_info     0x00000000    0x2149d
+.debug_info     0x00000000    0x21487
  .debug_info    0x00000000      0xcd1 src/ASF/sam/drivers/rtt/rtt.o
  .debug_info    0x00000cd1     0x240d src/ASF/common/components/touch/mxt/mxt_device_1.o
  .debug_info    0x000030de     0x12a4 src/ASF/common/services/clock/same70/sysclk.o
@@ -9662,7 +9662,7 @@ OUTPUT(MXT_EXAMPLE_USART1.elf elf32-littlearm)
  .debug_info    0x00019a90     0x1600 src/ASF/sam/utils/cmsis/same70/source/templates/gcc/startup_same70.o
  .debug_info    0x0001b090      0x5d0 src/ASF/sam/utils/cmsis/same70/source/templates/system_same70.o
  .debug_info    0x0001b660      0xdb0 src/ASF/sam/utils/syscalls/gcc/syscalls.o
- .debug_info    0x0001c410     0x508d src/main.o
+ .debug_info    0x0001c410     0x5077 src/main.o
 
 .debug_abbrev   0x00000000     0x439c
  .debug_abbrev  0x00000000      0x256 src/ASF/sam/drivers/rtt/rtt.o

@@ -255,7 +255,7 @@ static void RTT_init(uint16_t pllPreScale, uint32_t IrqNPulses);
 
 int check_button_click(uint32_t tx, uint32_t ty, botao* but) {
 	
-	ili9488_draw_pixmap(but->x_location, but->y_location, but->height, but->width, but->image);
+	ili9488_draw_pixmap(but->x_location, but->y_location, but->height, but->width, *(but->image));
 	if (tx >= but->x_location && tx <= but->x_location + but->width) {
 		if (ty >= but->y_location && ty <= but->y_location + but->height) {
 			but->flag = -1 * (but->flag);
@@ -509,7 +509,7 @@ int main(void)
 
 	delay_ms(1000);
 
-	ili9488_draw_pixmap(0, 150, 80, 80, &next);
+	ili9488_draw_pixmap(0, 150, 80, 80, *(botoes[3]->image));
 
 	delay_ms(1000);
 

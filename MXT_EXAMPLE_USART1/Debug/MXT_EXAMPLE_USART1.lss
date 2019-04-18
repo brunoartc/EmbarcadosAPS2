@@ -19,23 +19,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   7 .comment      00000059  00000000  00000000  00080c4e  2**0
                   CONTENTS, READONLY
-  8 .debug_info   0002149d  00000000  00000000  00080ca7  2**0
+  8 .debug_info   00021487  00000000  00000000  00080ca7  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_abbrev 0000439c  00000000  00000000  000a2144  2**0
+  9 .debug_abbrev 0000439c  00000000  00000000  000a212e  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    000090d1  00000000  00000000  000a64e0  2**0
+ 10 .debug_loc    000090d1  00000000  00000000  000a64ca  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_aranges 00000e18  00000000  00000000  000af5b1  2**0
+ 11 .debug_aranges 00000e18  00000000  00000000  000af59b  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000fc8  00000000  00000000  000b03c9  2**0
+ 12 .debug_ranges 00000fc8  00000000  00000000  000b03b3  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_macro  0002391f  00000000  00000000  000b1391  2**0
+ 13 .debug_macro  0002391f  00000000  00000000  000b137b  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_line   00010d60  00000000  00000000  000d4cb0  2**0
+ 14 .debug_line   00010d60  00000000  00000000  000d4c9a  2**0
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_str    00096db8  00000000  00000000  000e5a10  2**0
+ 15 .debug_str    00096db8  00000000  00000000  000e59fa  2**0
                   CONTENTS, READONLY, DEBUGGING
- 16 .debug_frame  00003528  00000000  00000000  0017c7c8  2**2
+ 16 .debug_frame  00003528  00000000  00000000  0017c7b4  2**2
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -5821,63 +5821,64 @@ int check_button_click(uint32_t tx, uint32_t ty, botao* but) {
   4021d6:	460f      	mov	r7, r1
   4021d8:	4614      	mov	r4, r2
 	
-	ili9488_draw_pixmap(but->x_location, but->y_location, but->height, but->width, but->image);
-  4021da:	f102 0314 	add.w	r3, r2, #20
-  4021de:	9300      	str	r3, [sp, #0]
-  4021e0:	6913      	ldr	r3, [r2, #16]
-  4021e2:	68d2      	ldr	r2, [r2, #12]
-  4021e4:	68a1      	ldr	r1, [r4, #8]
-  4021e6:	6860      	ldr	r0, [r4, #4]
-  4021e8:	4e11      	ldr	r6, [pc, #68]	; (402230 <check_button_click+0x60>)
-  4021ea:	47b0      	blx	r6
+	ili9488_draw_pixmap(but->x_location, but->y_location, but->height, but->width, *(but->image));
+  4021da:	6953      	ldr	r3, [r2, #20]
+  4021dc:	9300      	str	r3, [sp, #0]
+  4021de:	6913      	ldr	r3, [r2, #16]
+  4021e0:	68d2      	ldr	r2, [r2, #12]
+  4021e2:	68a1      	ldr	r1, [r4, #8]
+  4021e4:	6860      	ldr	r0, [r4, #4]
+  4021e6:	4e12      	ldr	r6, [pc, #72]	; (402230 <check_button_click+0x60>)
+  4021e8:	47b0      	blx	r6
 	if (tx >= but->x_location && tx <= but->x_location + but->width) {
-  4021ec:	6863      	ldr	r3, [r4, #4]
-  4021ee:	42ab      	cmp	r3, r5
-  4021f0:	d81c      	bhi.n	40222c <check_button_click+0x5c>
-  4021f2:	6922      	ldr	r2, [r4, #16]
-  4021f4:	4413      	add	r3, r2
-  4021f6:	429d      	cmp	r5, r3
-  4021f8:	d818      	bhi.n	40222c <check_button_click+0x5c>
+  4021ea:	6863      	ldr	r3, [r4, #4]
+  4021ec:	42ab      	cmp	r3, r5
+  4021ee:	d81c      	bhi.n	40222a <check_button_click+0x5a>
+  4021f0:	6922      	ldr	r2, [r4, #16]
+  4021f2:	4413      	add	r3, r2
+  4021f4:	429d      	cmp	r5, r3
+  4021f6:	d818      	bhi.n	40222a <check_button_click+0x5a>
 		if (ty >= but->y_location && ty <= but->y_location + but->height) {
-  4021fa:	68a3      	ldr	r3, [r4, #8]
-  4021fc:	42bb      	cmp	r3, r7
-  4021fe:	d815      	bhi.n	40222c <check_button_click+0x5c>
-  402200:	68e2      	ldr	r2, [r4, #12]
-  402202:	4413      	add	r3, r2
-  402204:	429f      	cmp	r7, r3
-  402206:	d811      	bhi.n	40222c <check_button_click+0x5c>
+  4021f8:	68a3      	ldr	r3, [r4, #8]
+  4021fa:	42bb      	cmp	r3, r7
+  4021fc:	d815      	bhi.n	40222a <check_button_click+0x5a>
+  4021fe:	68e2      	ldr	r2, [r4, #12]
+  402200:	4413      	add	r3, r2
+  402202:	429f      	cmp	r7, r3
+  402204:	d811      	bhi.n	40222a <check_button_click+0x5a>
 			but->flag = -1 * (but->flag);
-  402208:	6823      	ldr	r3, [r4, #0]
-  40220a:	425b      	negs	r3, r3
-  40220c:	6023      	str	r3, [r4, #0]
+  402206:	6823      	ldr	r3, [r4, #0]
+  402208:	425b      	negs	r3, r3
+  40220a:	6023      	str	r3, [r4, #0]
 			if (but->flag > 0) {
-  40220e:	2b00      	cmp	r3, #0
+  40220c:	2b00      	cmp	r3, #0
 				ili9488_set_foreground_color(COLOR_CONVERT(COLOR_ORANGE));
-  402210:	bfcc      	ite	gt
-  402212:	4808      	ldrgt	r0, [pc, #32]	; (402234 <check_button_click+0x64>)
+  40220e:	bfcc      	ite	gt
+  402210:	4808      	ldrgt	r0, [pc, #32]	; (402234 <check_button_click+0x64>)
 				ili9488_draw_filled_rectangle(but->x_location, but->y_location, but->x_location + but->width, but->y_location + but->height);
 			}
 			else {
 				ili9488_set_foreground_color(COLOR_CONVERT(COLOR_GREEN));
-  402214:	f44f 407c 	movle.w	r0, #64512	; 0xfc00
-  402218:	4b07      	ldr	r3, [pc, #28]	; (402238 <check_button_click+0x68>)
-  40221a:	4798      	blx	r3
+  402212:	f44f 407c 	movle.w	r0, #64512	; 0xfc00
+  402216:	4b08      	ldr	r3, [pc, #32]	; (402238 <check_button_click+0x68>)
+  402218:	4798      	blx	r3
 				ili9488_draw_filled_rectangle(but->x_location, but->y_location, but->x_location + but->width, but->y_location + but->height);
-  40221c:	6860      	ldr	r0, [r4, #4]
-  40221e:	68a1      	ldr	r1, [r4, #8]
-  402220:	68e3      	ldr	r3, [r4, #12]
-  402222:	6922      	ldr	r2, [r4, #16]
-  402224:	440b      	add	r3, r1
-  402226:	4402      	add	r2, r0
-  402228:	4c04      	ldr	r4, [pc, #16]	; (40223c <check_button_click+0x6c>)
-  40222a:	47a0      	blx	r4
+  40221a:	6860      	ldr	r0, [r4, #4]
+  40221c:	68a1      	ldr	r1, [r4, #8]
+  40221e:	68e3      	ldr	r3, [r4, #12]
+  402220:	6922      	ldr	r2, [r4, #16]
+  402222:	440b      	add	r3, r1
+  402224:	4402      	add	r2, r0
+  402226:	4c05      	ldr	r4, [pc, #20]	; (40223c <check_button_click+0x6c>)
+  402228:	47a0      	blx	r4
 			}
 
 		}
 	}
 }
-  40222c:	b003      	add	sp, #12
-  40222e:	bdf0      	pop	{r4, r5, r6, r7, pc}
+  40222a:	b003      	add	sp, #12
+  40222c:	bdf0      	pop	{r4, r5, r6, r7, pc}
+  40222e:	bf00      	nop
   402230:	00401265 	.word	0x00401265
   402234:	00fca400 	.word	0x00fca400
   402238:	00400f59 	.word	0x00400f59
@@ -6414,32 +6415,32 @@ int main(void)
 	};
 
 	sysclk_init(); /* Initialize system clocks */
-  4025d2:	4b80      	ldr	r3, [pc, #512]	; (4027d4 <main+0x208>)
+  4025d2:	4b81      	ldr	r3, [pc, #516]	; (4027d8 <main+0x20c>)
   4025d4:	4798      	blx	r3
 	board_init();  /* Initialize board */
-  4025d6:	4b80      	ldr	r3, [pc, #512]	; (4027d8 <main+0x20c>)
+  4025d6:	4b81      	ldr	r3, [pc, #516]	; (4027dc <main+0x210>)
   4025d8:	4798      	blx	r3
 	g_ili9488_display_opt.ul_width = ILI9488_LCD_WIDTH;
-  4025da:	4880      	ldr	r0, [pc, #512]	; (4027dc <main+0x210>)
+  4025da:	4881      	ldr	r0, [pc, #516]	; (4027e0 <main+0x214>)
   4025dc:	f44f 73a0 	mov.w	r3, #320	; 0x140
   4025e0:	6003      	str	r3, [r0, #0]
 	g_ili9488_display_opt.ul_height = ILI9488_LCD_HEIGHT;
   4025e2:	f44f 73f0 	mov.w	r3, #480	; 0x1e0
   4025e6:	6043      	str	r3, [r0, #4]
 	g_ili9488_display_opt.foreground_color = COLOR_CONVERT(COLOR_WHITE);
-  4025e8:	4b7d      	ldr	r3, [pc, #500]	; (4027e0 <main+0x214>)
+  4025e8:	4b7e      	ldr	r3, [pc, #504]	; (4027e4 <main+0x218>)
   4025ea:	6083      	str	r3, [r0, #8]
 	g_ili9488_display_opt.background_color = COLOR_CONVERT(COLOR_WHITE);
   4025ec:	60c3      	str	r3, [r0, #12]
 	ili9488_init(&g_ili9488_display_opt);
-  4025ee:	4b7d      	ldr	r3, [pc, #500]	; (4027e4 <main+0x218>)
+  4025ee:	4b7e      	ldr	r3, [pc, #504]	; (4027e8 <main+0x21c>)
   4025f0:	4798      	blx	r3
 	configure_lcd();
 	draw_screen();
-  4025f2:	4f7d      	ldr	r7, [pc, #500]	; (4027e8 <main+0x21c>)
+  4025f2:	4f7e      	ldr	r7, [pc, #504]	; (4027ec <main+0x220>)
   4025f4:	47b8      	blx	r7
 	uint8_t t8_object[] = {
-  4025f6:	4c7d      	ldr	r4, [pc, #500]	; (4027ec <main+0x220>)
+  4025f6:	4c7e      	ldr	r4, [pc, #504]	; (4027f0 <main+0x224>)
   4025f8:	ab06      	add	r3, sp, #24
   4025fa:	e894 0007 	ldmia.w	r4, {r0, r1, r2}
   4025fe:	c303      	stmia	r3!, {r0, r1}
@@ -6471,7 +6472,7 @@ int main(void)
 	twihs_master_options_t twi_opt = {
   402630:	2500      	movs	r5, #0
   402632:	950b      	str	r5, [sp, #44]	; 0x2c
-  402634:	4b6e      	ldr	r3, [pc, #440]	; (4027f0 <main+0x224>)
+  402634:	4b6f      	ldr	r3, [pc, #444]	; (4027f4 <main+0x228>)
   402636:	930a      	str	r3, [sp, #40]	; 0x28
   402638:	264a      	movs	r6, #74	; 0x4a
   40263a:	f88d 602c 	strb.w	r6, [sp, #44]	; 0x2c
@@ -6481,10 +6482,10 @@ static inline uint32_t twihs_master_setup(twihs_master_t p_twihs,
 		twihs_master_options_t *p_opt)
 {
 	p_opt->master_clk = sysclk_get_peripheral_hz();
-  40263e:	f8df 922c 	ldr.w	r9, [pc, #556]	; 40286c <main+0x2a0>
+  40263e:	f8df 9228 	ldr.w	r9, [pc, #552]	; 402868 <main+0x29c>
   402642:	f8cd 9024 	str.w	r9, [sp, #36]	; 0x24
   402646:	2013      	movs	r0, #19
-  402648:	f8df a224 	ldr.w	sl, [pc, #548]	; 402870 <main+0x2a4>
+  402648:	f8df a220 	ldr.w	sl, [pc, #544]	; 40286c <main+0x2a0>
   40264c:	47d0      	blx	sl
 #endif		
 	} else {
@@ -6492,32 +6493,32 @@ static inline uint32_t twihs_master_setup(twihs_master_t p_twihs,
 	}
 #endif
 	return (twihs_master_init(p_twihs, p_opt));
-  40264e:	4c69      	ldr	r4, [pc, #420]	; (4027f4 <main+0x228>)
+  40264e:	4c6a      	ldr	r4, [pc, #424]	; (4027f8 <main+0x22c>)
   402650:	a909      	add	r1, sp, #36	; 0x24
   402652:	4620      	mov	r0, r4
-  402654:	4b68      	ldr	r3, [pc, #416]	; (4027f8 <main+0x22c>)
+  402654:	4b69      	ldr	r3, [pc, #420]	; (4027fc <main+0x230>)
   402656:	4798      	blx	r3
 	status = mxt_init_device(device, MAXTOUCH_TWI_INTERFACE,
   402658:	2302      	movs	r3, #2
   40265a:	4632      	mov	r2, r6
   40265c:	4621      	mov	r1, r4
   40265e:	a81e      	add	r0, sp, #120	; 0x78
-  402660:	4c66      	ldr	r4, [pc, #408]	; (4027fc <main+0x230>)
+  402660:	4c67      	ldr	r4, [pc, #412]	; (402800 <main+0x234>)
   402662:	47a0      	blx	r4
 	mxt_write_config_reg(device, mxt_get_object_address(device,
   402664:	462a      	mov	r2, r5
   402666:	2106      	movs	r1, #6
   402668:	a81e      	add	r0, sp, #120	; 0x78
-  40266a:	4c65      	ldr	r4, [pc, #404]	; (402800 <main+0x234>)
+  40266a:	4c66      	ldr	r4, [pc, #408]	; (402804 <main+0x238>)
   40266c:	47a0      	blx	r4
   40266e:	2201      	movs	r2, #1
   402670:	4601      	mov	r1, r0
   402672:	a81e      	add	r0, sp, #120	; 0x78
-  402674:	4e63      	ldr	r6, [pc, #396]	; (402804 <main+0x238>)
+  402674:	4e64      	ldr	r6, [pc, #400]	; (402808 <main+0x23c>)
   402676:	47b0      	blx	r6
 	delay_ms(MXT_RESET_TIME);
-  402678:	4863      	ldr	r0, [pc, #396]	; (402808 <main+0x23c>)
-  40267a:	f8df 81f8 	ldr.w	r8, [pc, #504]	; 402874 <main+0x2a8>
+  402678:	4864      	ldr	r0, [pc, #400]	; (40280c <main+0x240>)
+  40267a:	f8df 81f4 	ldr.w	r8, [pc, #500]	; 402870 <main+0x2a4>
   40267e:	47c0      	blx	r8
 	mxt_write_config_reg(device, mxt_get_object_address(device,
   402680:	462a      	mov	r2, r5
@@ -6566,7 +6567,7 @@ static inline uint32_t twihs_master_setup(twihs_master_t p_twihs,
   4026ce:	aa06      	add	r2, sp, #24
   4026d0:	4601      	mov	r1, r0
   4026d2:	a81e      	add	r0, sp, #120	; 0x78
-  4026d4:	f8df b1a0 	ldr.w	fp, [pc, #416]	; 402878 <main+0x2ac>
+  4026d4:	f8df b19c 	ldr.w	fp, [pc, #412]	; 402874 <main+0x2a8>
   4026d8:	47d8      	blx	fp
 	mxt_write_config_object(device, mxt_get_object_address(device,
   4026da:	462a      	mov	r2, r5
@@ -6611,16 +6612,16 @@ static inline uint32_t twihs_master_setup(twihs_master_t p_twihs,
 static inline void stdio_serial_init(volatile void *usart, const usart_serial_options_t *opt)
 {
 	stdio_base = (void *)usart;
-  40271c:	4c3b      	ldr	r4, [pc, #236]	; (40280c <main+0x240>)
-  40271e:	4b3c      	ldr	r3, [pc, #240]	; (402810 <main+0x244>)
+  40271c:	4c3c      	ldr	r4, [pc, #240]	; (402810 <main+0x244>)
+  40271e:	4b3d      	ldr	r3, [pc, #244]	; (402814 <main+0x248>)
   402720:	601c      	str	r4, [r3, #0]
 	ptr_put = (int (*)(void volatile*,char))&usart_serial_putchar;
-  402722:	4a3c      	ldr	r2, [pc, #240]	; (402814 <main+0x248>)
-  402724:	4b3c      	ldr	r3, [pc, #240]	; (402818 <main+0x24c>)
+  402722:	4a3d      	ldr	r2, [pc, #244]	; (402818 <main+0x24c>)
+  402724:	4b3d      	ldr	r3, [pc, #244]	; (40281c <main+0x250>)
   402726:	601a      	str	r2, [r3, #0]
 	ptr_get = (void (*)(void volatile*,char*))&usart_serial_getchar;
-  402728:	4a3c      	ldr	r2, [pc, #240]	; (40281c <main+0x250>)
-  40272a:	4b3d      	ldr	r3, [pc, #244]	; (402820 <main+0x254>)
+  402728:	4a3d      	ldr	r2, [pc, #244]	; (402820 <main+0x254>)
+  40272a:	4b3e      	ldr	r3, [pc, #248]	; (402824 <main+0x258>)
   40272c:	601a      	str	r2, [r3, #0]
 	usart_settings.baudrate = opt->baudrate;
   40272e:	f44f 33e1 	mov.w	r3, #115200	; 0x1c200
@@ -6641,15 +6642,15 @@ static inline void stdio_serial_init(volatile void *usart, const usart_serial_op
   402746:	464a      	mov	r2, r9
   402748:	a915      	add	r1, sp, #84	; 0x54
   40274a:	4620      	mov	r0, r4
-  40274c:	4b35      	ldr	r3, [pc, #212]	; (402824 <main+0x258>)
+  40274c:	4b36      	ldr	r3, [pc, #216]	; (402828 <main+0x25c>)
   40274e:	4798      	blx	r3
 		usart_enable_tx(p_usart);
   402750:	4620      	mov	r0, r4
-  402752:	4b35      	ldr	r3, [pc, #212]	; (402828 <main+0x25c>)
+  402752:	4b36      	ldr	r3, [pc, #216]	; (40282c <main+0x260>)
   402754:	4798      	blx	r3
 		usart_enable_rx(p_usart);
   402756:	4620      	mov	r0, r4
-  402758:	4b34      	ldr	r3, [pc, #208]	; (40282c <main+0x260>)
+  402758:	4b35      	ldr	r3, [pc, #212]	; (402830 <main+0x264>)
   40275a:	4798      	blx	r3
 	fdevopen((int (*)(char, FILE*))(_write),(int (*)(FILE*))(_read));
 #  endif
@@ -6657,11 +6658,11 @@ static inline void stdio_serial_init(volatile void *usart, const usart_serial_op
 	// For AVR32 and SAM GCC
 	// Specify that stdout and stdin should not be buffered.
 	setbuf(stdout, NULL);
-  40275c:	4e34      	ldr	r6, [pc, #208]	; (402830 <main+0x264>)
+  40275c:	4e35      	ldr	r6, [pc, #212]	; (402834 <main+0x268>)
   40275e:	6833      	ldr	r3, [r6, #0]
   402760:	4629      	mov	r1, r5
   402762:	6898      	ldr	r0, [r3, #8]
-  402764:	4c33      	ldr	r4, [pc, #204]	; (402834 <main+0x268>)
+  402764:	4c34      	ldr	r4, [pc, #208]	; (402838 <main+0x26c>)
   402766:	47a0      	blx	r4
 	setbuf(stdin, NULL);
   402768:	6833      	ldr	r3, [r6, #0]
@@ -6674,118 +6675,118 @@ static inline void stdio_serial_init(volatile void *usart, const usart_serial_op
 	stdio_serial_init(USART_SERIAL_EXAMPLE, &usart_serial_options);
 
 	printf("\n\rmaXTouch data USART transmitter\n\r");
-  402770:	4831      	ldr	r0, [pc, #196]	; (402838 <main+0x26c>)
-  402772:	4b32      	ldr	r3, [pc, #200]	; (40283c <main+0x270>)
+  402770:	4832      	ldr	r0, [pc, #200]	; (40283c <main+0x270>)
+  402772:	4b33      	ldr	r3, [pc, #204]	; (402840 <main+0x274>)
   402774:	4798      	blx	r3
 
 	ili9488_draw_pixmap(0, 50, 319, 129, &logoImage);
-  402776:	4b32      	ldr	r3, [pc, #200]	; (402840 <main+0x274>)
+  402776:	4b33      	ldr	r3, [pc, #204]	; (402844 <main+0x278>)
   402778:	9300      	str	r3, [sp, #0]
   40277a:	2381      	movs	r3, #129	; 0x81
   40277c:	f240 123f 	movw	r2, #319	; 0x13f
   402780:	2132      	movs	r1, #50	; 0x32
   402782:	4628      	mov	r0, r5
-  402784:	4e2f      	ldr	r6, [pc, #188]	; (402844 <main+0x278>)
-  402786:	47b0      	blx	r6
+  402784:	f8df 90f0 	ldr.w	r9, [pc, #240]	; 402878 <main+0x2ac>
+  402788:	47c8      	blx	r9
 
 	delay_ms(1000);
-  402788:	4c2f      	ldr	r4, [pc, #188]	; (402848 <main+0x27c>)
-  40278a:	4620      	mov	r0, r4
-  40278c:	47c0      	blx	r8
+  40278a:	4c2f      	ldr	r4, [pc, #188]	; (402848 <main+0x27c>)
+  40278c:	4620      	mov	r0, r4
+  40278e:	47c0      	blx	r8
 
-	ili9488_draw_pixmap(0, 150, 80, 80, &next);
-  40278e:	4b2f      	ldr	r3, [pc, #188]	; (40284c <main+0x280>)
-  402790:	9300      	str	r3, [sp, #0]
-  402792:	2350      	movs	r3, #80	; 0x50
-  402794:	461a      	mov	r2, r3
-  402796:	2196      	movs	r1, #150	; 0x96
-  402798:	4628      	mov	r0, r5
-  40279a:	47b0      	blx	r6
+	ili9488_draw_pixmap(0, 150, 80, 80, *(botoes[3]->image));
+  402790:	4e2e      	ldr	r6, [pc, #184]	; (40284c <main+0x280>)
+  402792:	68f3      	ldr	r3, [r6, #12]
+  402794:	695b      	ldr	r3, [r3, #20]
+  402796:	9300      	str	r3, [sp, #0]
+  402798:	2350      	movs	r3, #80	; 0x50
+  40279a:	461a      	mov	r2, r3
+  40279c:	2196      	movs	r1, #150	; 0x96
+  40279e:	4628      	mov	r0, r5
+  4027a0:	47c8      	blx	r9
 
 	delay_ms(1000);
-  40279c:	4620      	mov	r0, r4
-  40279e:	47c0      	blx	r8
+  4027a2:	4620      	mov	r0, r4
+  4027a4:	47c0      	blx	r8
 
 	draw_screen();
-  4027a0:	47b8      	blx	r7
+  4027a6:	47b8      	blx	r7
 
 	t_ciclo *p_primeiro = initMenuOrder();
-  4027a2:	4b2b      	ldr	r3, [pc, #172]	; (402850 <main+0x284>)
-  4027a4:	4798      	blx	r3
-  4027a6:	4604      	mov	r4, r0
+  4027a8:	4b29      	ldr	r3, [pc, #164]	; (402850 <main+0x284>)
+  4027aa:	4798      	blx	r3
+  4027ac:	4604      	mov	r4, r0
 	font_draw_text(&calibri_36, "SIM", botoes[4]->x_location, botoes[4]->y_location, 1);
-  4027a8:	4b2a      	ldr	r3, [pc, #168]	; (402854 <main+0x288>)
-  4027aa:	691a      	ldr	r2, [r3, #16]
-  4027ac:	6893      	ldr	r3, [r2, #8]
-  4027ae:	6852      	ldr	r2, [r2, #4]
-  4027b0:	2601      	movs	r6, #1
-  4027b2:	9600      	str	r6, [sp, #0]
-  4027b4:	4928      	ldr	r1, [pc, #160]	; (402858 <main+0x28c>)
-  4027b6:	4829      	ldr	r0, [pc, #164]	; (40285c <main+0x290>)
-  4027b8:	4f29      	ldr	r7, [pc, #164]	; (402860 <main+0x294>)
-  4027ba:	47b8      	blx	r7
+  4027ae:	6932      	ldr	r2, [r6, #16]
+  4027b0:	6893      	ldr	r3, [r2, #8]
+  4027b2:	6852      	ldr	r2, [r2, #4]
+  4027b4:	2601      	movs	r6, #1
+  4027b6:	9600      	str	r6, [sp, #0]
+  4027b8:	4926      	ldr	r1, [pc, #152]	; (402854 <main+0x288>)
+  4027ba:	4827      	ldr	r0, [pc, #156]	; (402858 <main+0x28c>)
+  4027bc:	4f27      	ldr	r7, [pc, #156]	; (40285c <main+0x290>)
+  4027be:	47b8      	blx	r7
 
 	int started = 0;
 	unsigned long long ftime = 0;
 	unsigned long long cctime = 0;
 	unsigned int porta_aberta = 0;
 	f_rtt_alarme=true;
-  4027bc:	4b29      	ldr	r3, [pc, #164]	; (402864 <main+0x298>)
-  4027be:	701e      	strb	r6, [r3, #0]
+  4027c0:	4b27      	ldr	r3, [pc, #156]	; (402860 <main+0x294>)
+  4027c2:	701e      	strb	r6, [r3, #0]
 
 	update_screen(p_primeiro);
-  4027c0:	4620      	mov	r0, r4
-  4027c2:	4b29      	ldr	r3, [pc, #164]	; (402868 <main+0x29c>)
-  4027c4:	4798      	blx	r3
+  4027c4:	4620      	mov	r0, r4
+  4027c6:	4b27      	ldr	r3, [pc, #156]	; (402864 <main+0x298>)
+  4027c8:	4798      	blx	r3
 	unsigned long long cctime = 0;
-  4027c6:	f04f 0800 	mov.w	r8, #0
-  4027ca:	f04f 0900 	mov.w	r9, #0
+  4027ca:	f04f 0800 	mov.w	r8, #0
+  4027ce:	f04f 0900 	mov.w	r9, #0
 	unsigned long long ftime = 0;
-  4027ce:	46c2      	mov	sl, r8
-  4027d0:	46cb      	mov	fp, r9
-  4027d2:	e05a      	b.n	40288a <main+0x2be>
-  4027d4:	00400711 	.word	0x00400711
-  4027d8:	00400a79 	.word	0x00400a79
-  4027dc:	204010bc 	.word	0x204010bc
-  4027e0:	00fcfcfc 	.word	0x00fcfcfc
-  4027e4:	00400fe5 	.word	0x00400fe5
-  4027e8:	004021a9 	.word	0x004021a9
-  4027ec:	0040907c 	.word	0x0040907c
-  4027f0:	00061a80 	.word	0x00061a80
-  4027f4:	40018000 	.word	0x40018000
-  4027f8:	004019f1 	.word	0x004019f1
-  4027fc:	00400299 	.word	0x00400299
-  402800:	00400531 	.word	0x00400531
-  402804:	004005e9 	.word	0x004005e9
-  402808:	003228d8 	.word	0x003228d8
-  40280c:	40028000 	.word	0x40028000
-  402810:	204010b8 	.word	0x204010b8
-  402814:	00402035 	.word	0x00402035
-  402818:	204010b4 	.word	0x204010b4
-  40281c:	00401f59 	.word	0x00401f59
-  402820:	204010b0 	.word	0x204010b0
-  402824:	00401c19 	.word	0x00401c19
-  402828:	00401c6d 	.word	0x00401c6d
-  40282c:	00401c73 	.word	0x00401c73
-  402830:	20400270 	.word	0x20400270
-  402834:	00403b61 	.word	0x00403b61
-  402838:	0045a0f0 	.word	0x0045a0f0
-  40283c:	004034f1 	.word	0x004034f1
-  402840:	0043beb0 	.word	0x0043beb0
-  402844:	00401265 	.word	0x00401265
+  4027d2:	46c2      	mov	sl, r8
+  4027d4:	46cb      	mov	fp, r9
+  4027d6:	e058      	b.n	40288a <main+0x2be>
+  4027d8:	00400711 	.word	0x00400711
+  4027dc:	00400a79 	.word	0x00400a79
+  4027e0:	204010bc 	.word	0x204010bc
+  4027e4:	00fcfcfc 	.word	0x00fcfcfc
+  4027e8:	00400fe5 	.word	0x00400fe5
+  4027ec:	004021a9 	.word	0x004021a9
+  4027f0:	0040907c 	.word	0x0040907c
+  4027f4:	00061a80 	.word	0x00061a80
+  4027f8:	40018000 	.word	0x40018000
+  4027fc:	004019f1 	.word	0x004019f1
+  402800:	00400299 	.word	0x00400299
+  402804:	00400531 	.word	0x00400531
+  402808:	004005e9 	.word	0x004005e9
+  40280c:	003228d8 	.word	0x003228d8
+  402810:	40028000 	.word	0x40028000
+  402814:	204010b8 	.word	0x204010b8
+  402818:	00402035 	.word	0x00402035
+  40281c:	204010b4 	.word	0x204010b4
+  402820:	00401f59 	.word	0x00401f59
+  402824:	204010b0 	.word	0x204010b0
+  402828:	00401c19 	.word	0x00401c19
+  40282c:	00401c6d 	.word	0x00401c6d
+  402830:	00401c73 	.word	0x00401c73
+  402834:	20400270 	.word	0x20400270
+  402838:	00403b61 	.word	0x00403b61
+  40283c:	0045a0f0 	.word	0x0045a0f0
+  402840:	004034f1 	.word	0x004034f1
+  402844:	0043beb0 	.word	0x0043beb0
   402848:	0303af6b 	.word	0x0303af6b
-  40284c:	0045a158 	.word	0x0045a158
+  40284c:	204000d0 	.word	0x204000d0
   402850:	00402109 	.word	0x00402109
-  402854:	204000d0 	.word	0x204000d0
-  402858:	00463898 	.word	0x00463898
-  40285c:	004090dc 	.word	0x004090dc
-  402860:	00402149 	.word	0x00402149
-  402864:	20401078 	.word	0x20401078
-  402868:	00402399 	.word	0x00402399
-  40286c:	08f0d180 	.word	0x08f0d180
-  402870:	004017a5 	.word	0x004017a5
-  402874:	20400001 	.word	0x20400001
-  402878:	00400571 	.word	0x00400571
+  402854:	00463898 	.word	0x00463898
+  402858:	004090dc 	.word	0x004090dc
+  40285c:	00402149 	.word	0x00402149
+  402860:	20401078 	.word	0x20401078
+  402864:	00402399 	.word	0x00402399
+  402868:	08f0d180 	.word	0x08f0d180
+  40286c:	004017a5 	.word	0x004017a5
+  402870:	20400001 	.word	0x20400001
+  402874:	00400571 	.word	0x00400571
+  402878:	00401265 	.word	0x00401265
 					f_rtt_alarme = false;
 					
 				}
