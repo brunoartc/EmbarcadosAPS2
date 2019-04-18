@@ -6,10 +6,25 @@
 #include "conf_board.h"
 #include "conf_example.h"
 #include "conf_uart_serial.h"
-#include "logo.h"
 #include "sourcecodepro_28.h"
 #include "calibri_36.h"
 #include "arial_72.h"
+
+#include "logo.h"
+#include "lavagens.h"
+#include "previous.h"
+#include "next.h"
+#include "pause.h"
+#include "play.h"
+#include "enxague.h"
+#include "fast.h"
+#include "daily.h"
+#include "centrifuge.h"
+#include "custom.h"
+#include "rotation.h"
+#include "unlocked.h"
+#include "weight.h"
+
 
 #include "maquina1.h"
 
@@ -17,6 +32,7 @@
 #define STRING_LENGTH     70
 
 #define USART_TX_MAX_LENGTH     0xff
+
 
 struct ili9488_opt_t g_ili9488_display_opt;
 const uint32_t BUTTON_W = 120;
@@ -218,17 +234,17 @@ typedef struct {
 } botao;
 
 //480x320
-//flag | x | y | altura | largura
-botao b1 = { 1,0,0,80,320,&logoImage };
-botao b2 = { 1,0,80,80,107,&logoImage };
-botao b3 = { 1,107,80,80,106,&logoImage };
-botao b4 = { 1,213,80,80,107,&logoImage };
-botao b5 = { 1,0,160,160,160,&logoImage }; //pesado
-botao b6 = { 1,160,160,160,160,&logoImage }; //bolhas
-botao b7 = { 1,0,320,160,160,&logoImage }; //rpm
-botao b8 = { 1,160,320,160,160,&logoImage }; //tempo total
+//flag | x | y | altura | largura | endereço da imagem
+botao b1 = { 1,0,0,80,320, &lavagensImage };
+botao b2 = { 1,0,80,80,107, &previous };
+botao b3 = { 1,107,80,80,106, &play };
+botao b4 = { 1,213,80,80,107, &next };
+botao b5 = { 1,0,160,160,160, &next }; //pesado
+botao b6 = { 1,160,160,160,160, &next }; //bolhas
+botao b7 = { 1,0,320,160,160, &next }; //rpm
+botao b8 = { 1,160,320,160,160, &next }; //tempo total
+botao* botoes[] = { &b1, &b2, &b3, &b4, &b5, &b6, &b7, &b8};
 
-botao* botoes[] = { &b1,&b2,&b3,&b4,&b5,&b6,&b7,&b8 };
 
 const int num_botoes = 8;
 
@@ -238,7 +254,8 @@ static void RTT_init(uint16_t pllPreScale, uint32_t IrqNPulses);
 
 
 int check_button_click(uint32_t tx, uint32_t ty, botao* but) {
-
+	
+	ili9488_draw_pixmap(but->x_location, but->y_location, but->height, but->width, but->image);
 	if (tx >= but->x_location && tx <= but->x_location + but->width) {
 		if (ty >= but->y_location && ty <= but->y_location + but->height) {
 			but->flag = -1 * (but->flag);
@@ -270,7 +287,7 @@ void mxt_debounce(struct mxt_device *device)
 		/* Temporary buffer for each new touch event line */
 		char buf[STRING_LENGTH];
 	
-		/* Read next next touch event in the queue, discard if read fails */
+		/* Read next touch event in the queue, discard if read fails */
 		if (mxt_read_touch_event(device, &touch_event) != STATUS_OK) {
 			continue;
 		}
@@ -488,7 +505,11 @@ int main(void)
 
 	printf("\n\rmaXTouch data USART transmitter\n\r");
 
-	ili9488_draw_pixmap(0, 50, 319, 129, logoImage);
+	ili9488_draw_pixmap(0, 50, 319, 129, &logoImage);
+
+	delay_ms(1000);
+
+	ili9488_draw_pixmap(0, 150, 80, 80, &next);
 
 	delay_ms(1000);
 
@@ -503,7 +524,8 @@ int main(void)
 	unsigned int porta_aberta = 0;
 	f_rtt_alarme=true;
 
-
+	update_screen(p_primeiro);
+	
 	while (true) {
 		/* Check for any pending messages and run message handler if any
 		* message is found in the queue */
