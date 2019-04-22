@@ -12,6 +12,7 @@
 
 #include "logo.h"
 #include "lavagens.h"
+#include "bubbles.h"
 #include "previous.h"
 #include "next.h"
 #include "pause.h"
@@ -24,7 +25,7 @@
 #include "rotation.h"
 #include "unlocked.h"
 #include "weight.h"
-
+#include "locked.h"
 
 #include "maquina1.h"
 
@@ -224,6 +225,11 @@ uint32_t convert_axis_system_y(uint32_t touch_x) {
 	return ILI9488_LCD_HEIGHT * touch_x / 4096;
 }
 
+//LISTA DE IMAGENS
+ili9488_color_t* imageLavagens[] = {&daily, &weight, &enxague, &centrifuge, &custom, &fast};
+ili9488_color_t* imageNavegacao[] = {&previous, &play, &pause, &next, &locked, &unlocked};
+
+
 typedef struct {
 	int32_t flag;
 	uint32_t x_location;
@@ -235,18 +241,22 @@ typedef struct {
 
 //480x320
 //flag | x | y | altura | largura | endereço da imagem
-botao b1 = { 1,0,0,80,320, &lavagensImage };
+botao b10 = { 1, 0, 0, 80, 80, &daily };
+botao b1 = { 1, 0, 0, 80, 240, &lavagensImage };
 botao b2 = { 1,0,80,80,107, &previous };
 botao b3 = { 1,107,80,80,106, &play };
 botao b4 = { 1,213,80,80,107, &next };
-botao b5 = { 1,0,160,160,160, &next }; //pesado
-botao b6 = { 1,160,160,160,160, &next }; //bolhas
-botao b7 = { 1,0,320,160,160, &next }; //rpm
+botao b5 = { 1,0,160,160,160, &weight }; //pesado
+botao b6 = { 1,160,160,160,160, &bubbles }; //bolhas
+botao b7 = { 1,0,320,160,160, &rotation }; //rpm
 botao b8 = { 1,160,320,160,160, &next }; //tempo total
-botao* botoes[] = { &b1, &b2, &b3, &b4, &b5, &b6, &b7, &b8};
+botao b9 = { 0,240,0,80,80, &locked }; // LOCKED/UNLOCKED
 
 
-const int num_botoes = 8;
+botao* botoes[] = {&b1, &b2, &b3, &b4, &b5, &b6, &b7, &b8, &b9, &b10};
+
+
+const int num_botoes = 10;
 
 volatile Bool f_rtt_alarme = false;
 
@@ -255,19 +265,10 @@ static void RTT_init(uint16_t pllPreScale, uint32_t IrqNPulses);
 
 int check_button_click(uint32_t tx, uint32_t ty, botao* but) {
 	
-	ili9488_draw_pixmap(but->x_location, but->y_location, but->height, but->width, *(but->image));
+	ili9488_draw_pixmap(but->x_location, but->y_location, 80, 80, *(but->image));
 	if (tx >= but->x_location && tx <= but->x_location + but->width) {
 		if (ty >= but->y_location && ty <= but->y_location + but->height) {
 			but->flag = -1 * (but->flag);
-			if (but->flag > 0) {
-				ili9488_set_foreground_color(COLOR_CONVERT(COLOR_ORANGE));
-				ili9488_draw_filled_rectangle(but->x_location, but->y_location, but->x_location + but->width, but->y_location + but->height);
-			}
-			else {
-				ili9488_set_foreground_color(COLOR_CONVERT(COLOR_GREEN));
-				ili9488_draw_filled_rectangle(but->x_location, but->y_location, but->x_location + but->width, but->y_location + but->height);
-			}
-
 		}
 	}
 }
@@ -439,7 +440,7 @@ void update_screen(t_ciclo *p_primeiro){
 		ili9488_set_foreground_color(COLOR_CONVERT(COLOR_WHITE));
 		//draw_screen(); //desperdicio de tempo
 		ili9488_draw_filled_rectangle(botoes[0]->x_location, botoes[0]->y_location, botoes[0]->x_location + botoes[0]->width, botoes[0]->y_location + botoes[0]->height);
-		font_draw_text(&calibri_36, p_primeiro->nome, 20, 20, 1);
+		font_draw_text(&calibri_36, p_primeiro->nome,(20+80), 20, 1);
 		ili9488_draw_filled_rectangle(botoes[4]->x_location, botoes[4]->y_location, botoes[4]->x_location + botoes[4]->width, botoes[4]->y_location + botoes[4]->height);
 		font_draw_text(&calibri_36, (p_primeiro->heavy == 1 ? "pes:SIM" : "pes:NAO"), botoes[4]->x_location + 20, botoes[4]->y_location + 20, 1);
 		ili9488_draw_filled_rectangle(botoes[5]->x_location, botoes[5]->y_location, botoes[5]->x_location + botoes[5]->width, botoes[5]->y_location + botoes[5]->height);
@@ -509,7 +510,11 @@ int main(void)
 
 	delay_ms(1000);
 
-	ili9488_draw_pixmap(0, 150, 80, 80, *(botoes[3]->image));
+	ili9488_draw_pixmap(0, 150, 80, 80, *(botoes[2]->image));
+
+	delay_ms(1000);
+
+	ili9488_draw_pixmap(0, 450, 80, 80, *(botoes[2]->image));
 
 	delay_ms(1000);
 
@@ -536,7 +541,6 @@ int main(void)
 		}
 		
 		if (p_primeiro->id==5){
-			if (1==1)
 			if (botoes[4]->flag>0){
 				
 				if(p_primeiro->heavy) {
@@ -606,7 +610,7 @@ int main(void)
 
 		}
 		else {
-			if (botoes[0]->flag > 0)font_draw_text(&calibri_36, p_primeiro->nome, 20, 20, 1);
+			if (botoes[0]->flag > 0)font_draw_text(&calibri_36, p_primeiro->nome, (20+80), 20, 1);
 			if (botoes[1]->flag > 0) {
 				botoes[1]->flag = -1;
 				p_primeiro = p_primeiro->previous;

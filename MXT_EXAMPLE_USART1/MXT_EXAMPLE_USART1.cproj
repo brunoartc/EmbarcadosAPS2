@@ -697,6 +697,12 @@
     <Compile Include="src\ASF\sam\drivers\rtt\rtt.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\locked.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\play.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\unlocked.h">
       <SubType>compile</SubType>
     </Compile>
@@ -706,9 +712,6 @@
     <None Include="src\ASF\sam\drivers\rtt\rtt.h">
       <SubType>compile</SubType>
     </None>
-    <Compile Include="src\bubbles.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\centrifuge.h">
       <SubType>compile</SubType>
     </Compile>
@@ -734,9 +737,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\pause.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\play.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\previous.h">
