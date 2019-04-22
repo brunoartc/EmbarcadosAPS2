@@ -697,6 +697,12 @@
     <Compile Include="src\ASF\sam\drivers\rtt\rtt.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\fast.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\lavagens.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\locked.h">
       <SubType>compile</SubType>
     </Compile>
@@ -722,12 +728,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\enxague.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\fast.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\lavagens.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\maquina1.h">
