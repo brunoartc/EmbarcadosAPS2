@@ -261,15 +261,28 @@ volatile Bool f_rtt_alarme = false;
 
 static void RTT_init(uint16_t pllPreScale, uint32_t IrqNPulses);
 
+volatile Bool loccked = false;
 
 int check_button_click(uint32_t tx, uint32_t ty, botao* but) {
 	
 	ili9488_draw_pixmap(but->x_location, but->y_location, 80, 80, *(but->image));
-	if (tx >= but->x_location && tx <= but->x_location + but->width) {
-		if (ty >= but->y_location && ty <= but->y_location + but->height) {
-			but->flag = 1;// * (but->flag);
+	
+	if (loccked==0){
+		printf(!!!!!!1);
+		if (tx >= but->x_location && tx <= but->x_location + but->width) {
+			if (ty >= but->y_location && ty <= but->y_location + but->height) {
+				but->flag = 1;// * (but->flag);
+			}
 		}
+		//
+		///////////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////////////////////////
+		
 	}
+	
+	
+	
+	
 }
 
 void mxt_debounce(struct mxt_device *device)
@@ -337,11 +350,18 @@ void mxt_handler(struct mxt_device *device)
 		touch_event.id, touch_event.x, touch_event.y,
 		touch_event.status, conv_x, conv_y);
 		//update_screen(conv_x, conv_y);
+		
+
 		for (int ii = 0; ii < num_botoes; ii += 1) {
 
 
 
 			check_button_click(conv_x, conv_y, botoes[ii]);
+		}
+		if (conv_x >= botoes[8]->x_location && conv_x <= botoes[8]->x_location + botoes[8]->width) {
+			if (conv_y >= botoes[8]->y_location && conv_y <= botoes[8]->y_location + botoes[8]->height) {
+				loccked = !(loccked);// * (but->flag);
+			}
 		}
 
 
@@ -454,9 +474,9 @@ void update_screen(t_ciclo *p_primeiro){
 			ili9488_draw_pixmap( 240, 0, 80, 80, blockNavegacao[0]);
 		}
 		ili9488_draw_filled_rectangle(botoes[4]->x_location, botoes[4]->y_location, botoes[4]->x_location + botoes[4]->width, botoes[4]->y_location + botoes[4]->height);
-		font_draw_text(&calibri_36, (p_primeiro->heavy == 1 ? "pes:SIM" : "pes:NAO"), botoes[4]->x_location + 20, botoes[4]->y_location + 20, 1);
+		font_draw_text(&calibri_36, (p_primeiro->heavy == 1 ? "Pesado" : "Leve"), botoes[4]->x_location + 20, botoes[4]->y_location + 20, 1);
 		ili9488_draw_filled_rectangle(botoes[5]->x_location, botoes[5]->y_location, botoes[5]->x_location + botoes[5]->width, botoes[5]->y_location + botoes[5]->height);
-		font_draw_text(&calibri_36, (p_primeiro->bubblesOn == 1 ? "bol:SIM" : "bol:NAO"), botoes[5]->x_location + 20, botoes[5]->y_location + 20, 1);
+		font_draw_text(&calibri_36, (p_primeiro->bubblesOn == 1 ? "Bolhas" : "Agua"), botoes[5]->x_location + 20, botoes[5]->y_location + 20, 1);
 		char RPM[12];
 		sprintf(RPM, "%d", p_primeiro->centrifugacaoRPM);
 		ili9488_draw_filled_rectangle(botoes[6]->x_location, botoes[6]->y_location, botoes[6]->x_location + botoes[6]->width, botoes[6]->y_location + botoes[6]->height);
@@ -506,8 +526,6 @@ int main(void)
 	printf("\n\rmaXTouch data USART transmitter\n\r");
 
 	ili9488_draw_pixmap(0, 50, 319, 129, &logoImage);
-	ili9488_draw_pixmap(0, 150, 80, 80, *(botoes[4]->image));
-
 	delay_ms(1000);
 
 	draw_screen();
@@ -525,14 +543,14 @@ int main(void)
 
 	update_screen(p_primeiro);
 	
-	botoes[1]->flag*=-1;
+	botoes[1]->flag=-1;
 	
 	while (true) {
 		/* Check for any pending messages and run message handler if any
 		* message is found in the queue */
 		if (mxt_is_message_pending(&device)) {
 			mxt_handler(&device);
-			delay_ms(200);
+			delay_ms(800);
 			mxt_debounce(&device);
 		}
 		
@@ -569,7 +587,7 @@ int main(void)
 		}
 		
 		
-		//TODO: fazer handle de porta aberta
+		
 
 		if ((ftime > cctime || botoes[2]->flag > 0) && !(porta_aberta)) {
 			if (botoes[2]->flag < 0) botoes[2]->flag = 1;
