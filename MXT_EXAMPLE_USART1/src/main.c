@@ -43,6 +43,12 @@ const uint32_t BUTTON_X = ILI9488_LCD_WIDTH / 2;
 const uint32_t BUTTON_Y = ILI9488_LCD_HEIGHT / 2;
 
 
+#define BUT_PIO PIOA
+#define BUT_PIO_ID 10
+#define BUT_PIO_IDX 11
+#define BUT_PIO_IDX_MASK (1u << BUT_PIO_IDX)
+
+
 t_ciclo *initMenuOrder() {
 
 	c_rapido.previous = &c_enxague;
@@ -545,7 +551,20 @@ int main(void)
 	
 	botoes[1]->flag=-1;
 	
+	pio_set_input(BUT_PIO,BUT_PIO_IDX_MASK,PIO_DEFAULT);
+	
+	
 	while (true) {
+		
+		while (pio_get(BUT_PIO,PIO_INPUT,BUT_PIO_IDX_MASK)){
+			ili9488_set_foreground_color(COLOR_CONVERT(COLOR_RED));
+			ili9488_draw_filled_rectangle(0, 0, ILI9488_LCD_WIDTH - 1, ILI9488_LCD_HEIGHT - 1);
+			while (pio_get(BUT_PIO,PIO_INPUT,BUT_PIO_IDX_MASK)){}
+			ili9488_set_foreground_color(COLOR_CONVERT(COLOR_WHITE));
+			ili9488_draw_filled_rectangle(0, 0, ILI9488_LCD_WIDTH - 1, ILI9488_LCD_HEIGHT - 1);
+			update_screen(p_primeiro);
+		}
+		
 		/* Check for any pending messages and run message handler if any
 		* message is found in the queue */
 		if (mxt_is_message_pending(&device)) {
