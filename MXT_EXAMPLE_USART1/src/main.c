@@ -229,15 +229,15 @@ typedef struct {
 
 //480x320
 //flag | x | y | altura | largura | endereço da imagem
-botao b1 = { 1, 0, 0, 80, 240, &lavagens };
-botao b2 = { 1,0,80,80,107, &previous };
-botao b3 = { -1,107,80,80,106, &play };
-botao b4 = { 1,213,80,80,107, &next };
-botao b5 = { 1,0,160,160,160, &lavagens }; //pesado
-botao b6 = { 1,160,160,160,160, &lavagens }; //bolhas
-botao b7 = { -1,0,320,160,160, &lavagens }; //rpm
-botao b8 = { 1,160,320,160,160, &lavagens }; //tempo total
-botao b9 = { -1,240,0,80,80, &lavagens }; // LOCKED/UNLOCKED
+const botao b1 = { 1, 0, 0, 80, 240, &lavagens };
+const botao b2 = { 1,0,80,80,107, &previous };
+const botao b3 = { -1,107,80,80,106, &play };
+const botao b4 = { 1,213,80,80,107, &next };
+const botao b5 = { 1,0,160,160,160, &lavagens }; //pesado
+const botao b6 = { 1,160,160,160,160, &lavagens }; //bolhas
+const botao b7 = { -1,0,320,160,160, &lavagens }; //rpm
+const botao b8 = { 1,160,320,160,160, &lavagens }; //tempo total
+const botao b9 = { -1,240,0,80,80, &lavagens }; // LOCKED/UNLOCKED
 
 
 botao* botoes[] = {&b1, &b2, &b3, &b4, &b5, &b6, &b7, &b8, &b9};
