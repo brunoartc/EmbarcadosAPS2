@@ -524,7 +524,6 @@ int main(void)
 	int started = 0;
 	unsigned long long ftime = 0;
 	unsigned long long cctime = 0;
-	unsigned int porta_aberta = 0;
 	f_rtt_alarme=true;
 	
 	
@@ -590,7 +589,7 @@ int main(void)
 		
 		
 
-		if ((ftime > cctime || botoes[2]->flag > 0) && !(porta_aberta)) {
+		if ((ftime > cctime || botoes[2]->flag > 0)) {
 			if (botoes[2]->flag < 0) botoes[2]->flag = 1;
 			if (started == 0) {
 				started = 1;
