@@ -36,11 +36,6 @@
 
 
 struct ili9488_opt_t g_ili9488_display_opt;
-const uint32_t BUTTON_W = 120;
-const uint32_t BUTTON_H = 150;
-const uint32_t BUTTON_BORDER = 2;
-const uint32_t BUTTON_X = ILI9488_LCD_WIDTH / 2;
-const uint32_t BUTTON_Y = ILI9488_LCD_HEIGHT / 2;
 
 
 #define BUT_PIO PIOA
@@ -246,7 +241,7 @@ typedef struct {
 } botao;
 
 //480x320
-//flag | x | y | altura | largura | endereço da imagem
+//flag | x | y | altura | largura | endereÃ§o da imagem
 botao b1 = { 1, 0, 0, 80, 240, &lavagens };
 botao b2 = { 1,0,80,80,107, &previous };
 botao b3 = { -1,107,80,80,106, &play };
