@@ -557,11 +557,7 @@ int main(void)
 		if (p_primeiro->id==5){
 			if (botoes[4]->flag>0){
 				
-				if(p_primeiro->heavy) {
-					p_primeiro->heavy=!(p_primeiro->heavy);
-				} else {
-					p_primeiro->heavy=!(p_primeiro->heavy);
-				}
+				p_primeiro->heavy=!(p_primeiro->heavy);
 				botoes[4]->flag=-1;
 				update_screen(p_primeiro);
 				
