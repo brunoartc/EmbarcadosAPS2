@@ -111,19 +111,6 @@ void font_draw_text(tFont *font, const char *text, int x, int y, int spacing) {
 }
 
 
-char * toArray(int number)
-{
-	int n = log10(number) + 1;
-	int i;
-	char *numberArray = calloc(n, sizeof(char));
-	for (i = 0; i < n; ++i, number /= 10)
-	{
-		numberArray[i] = number % 10;
-	}
-	return numberArray;
-}
-
-
 static void mxt_init(struct mxt_device *device)
 {
 	enum status_code status;
