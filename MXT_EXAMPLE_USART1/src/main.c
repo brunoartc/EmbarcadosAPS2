@@ -3,13 +3,13 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
+
 #include "conf_board.h"
 #include "conf_example.h"
 #include "conf_uart_serial.h"
 #include "sourcecodepro_28.h"
 #include "calibri_36.h"
 #include "arial_72.h"
-
 #include "logo.h"
 #include "lavagens.h"
 #include "bubbles.h"
@@ -26,63 +26,40 @@
 #include "unlocked.h"
 #include "weight.h"
 #include "locked.h"
-
 #include "maquina1.h"
 
 #define MAX_ENTRIES        3
 #define STRING_LENGTH     70
-
 #define USART_TX_MAX_LENGTH     0xff
-
-
-struct ili9488_opt_t g_ili9488_display_opt;
-
-
 #define BUT_PIO PIOA
 #define BUT_PIO_ID 10
 #define BUT_PIO_IDX 11
 #define BUT_PIO_IDX_MASK (1u << BUT_PIO_IDX)
-
 #define ID_ENXAGUE 5
 
+struct ili9488_opt_t g_ili9488_display_opt;
 
 t_ciclo *initMenuOrder() {
 
 	c_rapido.previous = &c_enxague;
-
 	c_rapido.next = &c_diario;
 
-
-
 	c_diario.previous = &c_rapido;
-
 	c_diario.next = &c_pesado;
 
-
-
 	c_pesado.previous = &c_diario;
-
 	c_pesado.next = &c_enxague;
 
-
-
 	c_enxague.previous = &c_pesado;
-
 	c_enxague.next = &c_centrifuga;
 
-
-
 	c_centrifuga.previous = &c_enxague;
-
 	c_centrifuga.next = &c_custom;
 	
 	c_custom.previous = &c_centrifuga;
 	c_custom.next = &c_rapido;
 
-
-
 	return(&c_diario);
-
 }
 
 
@@ -96,7 +73,6 @@ static void configure_lcd(void) {
 	/* Initialize LCD */
 	ili9488_init(&g_ili9488_display_opt);
 }
-
 
 void font_draw_text(tFont *font, const char *text, int x, int y, int spacing) {
 	char *p = text;
@@ -116,13 +92,11 @@ void font_draw_text(tFont *font, const char *text, int x, int y, int spacing) {
 static void mxt_init(struct mxt_device *device)
 {
 	enum status_code status;
-
 	/* T8 configuration object data */
 	uint8_t t8_object[] = {
 		0x0d, 0x00, 0x05, 0x0a, 0x4b, 0x00, 0x00,
 		0x00, 0x32, 0x19
 	};
-
 	/* T9 configuration object data */
 	uint8_t t9_object[] = {
 		0x8B, 0x00, 0x00, 0x0E, 0x08, 0x00, 0x80,
@@ -132,13 +106,11 @@ static void mxt_init(struct mxt_device *device)
 		0x00, 0x00, 0x00, 0x0A, 0x00, 0x00, 0x02,
 		0x02
 	};
-
 	/* T46 configuration object data */
 	uint8_t t46_object[] = {
 		0x00, 0x00, 0x18, 0x18, 0x00, 0x00, 0x03,
 		0x00, 0x00
 	};
-
 	/* T56 configuration object data */
 	uint8_t t56_object[] = {
 		0x02, 0x00, 0x01, 0x18, 0x1E, 0x1E, 0x1E,
@@ -147,7 +119,6 @@ static void mxt_init(struct mxt_device *device)
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 		0x00, 0x00, 0x00, 0x00, 0x00
 	};
-
 	/* TWI configuration */
 	twihs_master_options_t twi_opt = {
 		.speed = MXT_TWI_SPEED,
@@ -156,21 +127,17 @@ static void mxt_init(struct mxt_device *device)
 
 	status = (enum status_code)twihs_master_setup(MAXTOUCH_TWI_INTERFACE, &twi_opt);
 	Assert(status == STATUS_OK);
-
 	/* Initialize the maXTouch device */
 	status = mxt_init_device(device, MAXTOUCH_TWI_INTERFACE,
 	MAXTOUCH_TWI_ADDRESS, MAXTOUCH_XPRO_CHG_PIO);
 	Assert(status == STATUS_OK);
-
 	/* Issue soft reset of maXTouch device by writing a non-zero value to
 	* the reset register */
 	mxt_write_config_reg(device, mxt_get_object_address(device,
 	MXT_GEN_COMMANDPROCESSOR_T6, 0)
 	+ MXT_GEN_COMMANDPROCESSOR_RESET, 0x01);
-
 	/* Wait for the reset of the device to complete */
 	delay_ms(MXT_RESET_TIME);
-
 	/* Write data to configuration registers in T7 configuration object */
 	mxt_write_config_reg(device, mxt_get_object_address(device,
 	MXT_GEN_POWERCONFIG_T7, 0) + 0, 0x20);
@@ -180,7 +147,6 @@ static void mxt_init(struct mxt_device *device)
 	MXT_GEN_POWERCONFIG_T7, 0) + 2, 0x4b);
 	mxt_write_config_reg(device, mxt_get_object_address(device,
 	MXT_GEN_POWERCONFIG_T7, 0) + 3, 0x84);
-
 	/* Write predefined configuration data to configuration objects */
 	mxt_write_config_object(device, mxt_get_object_address(device,
 	MXT_GEN_ACQUISITIONCONFIG_T8, 0), &t8_object);
@@ -190,7 +156,6 @@ static void mxt_init(struct mxt_device *device)
 	MXT_SPT_CTE_CONFIGURATION_T46, 0), &t46_object);
 	mxt_write_config_object(device, mxt_get_object_address(device,
 	MXT_PROCI_SHIELDLESS_T56, 0), &t56_object);
-
 	/* Issue recalibration command to maXTouch device by writing a non-zero
 	* value to the calibrate register */
 	mxt_write_config_reg(device, mxt_get_object_address(device,
@@ -219,7 +184,6 @@ uint32_t convert_axis_system_y(uint32_t touch_x) {
 ili9488_color_t* imageLavagens[] = {&daily, &weight, &enxague, &centrifuge, &custom, &fast};
 ili9488_color_t* blockNavegacao[] = {&locked, &unlocked};
 
-
 typedef struct {
 	int32_t flag;
 	uint32_t x_location;
@@ -241,38 +205,23 @@ const botao b7 = { -1,0,320,160,160, &lavagens }; //rpm
 const botao b8 = { 1,160,320,160,160, &lavagens }; //tempo total
 const botao b9 = { -1,240,0,80,80, &lavagens }; // LOCKED/UNLOCKED
 
-
 botao* botoes[] = {&b1, &b2, &b3, &b4, &b5, &b6, &b7, &b8, &b9};
 
-
 const int num_botoes = 9;
-
 volatile Bool f_rtt_alarme = false;
-
 static void RTT_init(uint16_t pllPreScale, uint32_t IrqNPulses);
-
 volatile Bool loccked = false;
 
 int check_button_click(uint32_t tx, uint32_t ty, botao* but) {
 	
 	ili9488_draw_pixmap(but->x_location, but->y_location, 80, 80, *(but->image));
-	
 	if (loccked==0){
-		printf(!!!!!!1);
 		if (tx >= but->x_location && tx <= but->x_location + but->width) {
 			if (ty >= but->y_location && ty <= but->y_location + but->height) {
 				but->flag = 1;// * (but->flag);
 			}
 		}
-		//
-		///////////////////////////////////////////////////////////////////////////
-		//////////////////////////////////////////////////////////////////////////
-		
 	}
-	
-	
-	
-	
 }
 
 void mxt_debounce(struct mxt_device *device)
@@ -299,7 +248,6 @@ void mxt_debounce(struct mxt_device *device)
 		uint32_t conv_x = convert_axis_system_x(touch_event.y);
 		uint32_t conv_y = convert_axis_system_y(touch_event.x);
 		
-
 		/* Add the new string to the string buffer */
 		strcat(tx_buf, buf);
 		i++;
@@ -307,7 +255,6 @@ void mxt_debounce(struct mxt_device *device)
 		/* Check if there is still messages in the queue and
 		 * if we have reached the maximum numbers of events */
 	} while ((mxt_is_message_pending(device)) & (i < MAX_ENTRIES));
-
 }
 
 
@@ -341,11 +288,7 @@ void mxt_handler(struct mxt_device *device)
 		touch_event.status, conv_x, conv_y);
 		//update_screen(conv_x, conv_y);
 		
-
 		for (int ii = 0; ii < num_botoes; ii += 1) {
-
-
-
 			check_button_click(conv_x, conv_y, botoes[ii]);
 		}
 		if (conv_x >= botoes[8]->x_location && conv_x <= botoes[8]->x_location + botoes[8]->width) {
@@ -353,7 +296,6 @@ void mxt_handler(struct mxt_device *device)
 				loccked = !(loccked);// * (but->flag);
 			}
 		}
-
 
 		/* Add the new string to the string buffer */
 		strcat(tx_buf, buf);
@@ -370,84 +312,42 @@ void mxt_handler(struct mxt_device *device)
 }
 
 
-void RTT_Handler(void)
-
-{
+void RTT_Handler(void){
 
 	uint32_t ul_status;
-
-
-
 	/* Get RTT status */
-
 	ul_status = rtt_get_status(RTT);
-
-
-
+	
 	/* IRQ due to Time has changed */
-
 	if ((ul_status & RTT_SR_RTTINC) == RTT_SR_RTTINC) {}
 
-
-
 	/* IRQ due to Alarm */
-
 	if ((ul_status & RTT_SR_ALMS) == RTT_SR_ALMS) {
-
-
-
 		f_rtt_alarme = true;                  // flag RTT alarme
-
 	}
-
 }
 
-
-static void RTT_init(uint16_t pllPreScale, uint32_t IrqNPulses)
-
-{
+static void RTT_init(uint16_t pllPreScale, uint32_t IrqNPulses){
 
 	uint32_t ul_previous_time;
 
-
-
 	/* Configure RTT for a 1 second tick interrupt */
-
 	rtt_sel_source(RTT, false);
-
 	rtt_init(RTT, pllPreScale);
-
-
-
 	ul_previous_time = rtt_read_timer_value(RTT);
-
 	while (ul_previous_time == rtt_read_timer_value(RTT));
-
-
-
 	rtt_write_alarm_time(RTT, IrqNPulses + ul_previous_time);
 
-
-
 	/* Enable RTT interrupt */
-
 	NVIC_DisableIRQ(RTT_IRQn);
-
 	NVIC_ClearPendingIRQ(RTT_IRQn);
-
 	NVIC_SetPriority(RTT_IRQn, 0);
-
 	NVIC_EnableIRQ(RTT_IRQn);
-
 	rtt_enable_interrupt(RTT, RTT_MR_ALMIEN);
-
 }
 
 
 void update_screen(t_ciclo *p_primeiro){
-	
-	
-	
 	if (0==0) {
 		ili9488_set_foreground_color(COLOR_CONVERT(COLOR_WHITE));
 		//draw_screen(); //desperdicio de tempo
@@ -482,19 +382,13 @@ void update_screen(t_ciclo *p_primeiro){
 			font_draw_text(&calibri_36, tempo, botoes[7]->x_location + 20, botoes[7]->y_location + 20 + 36, 1); // + 36 sempre -> \n
 			sprintf(tempo, "totP:%d", (p_primeiro->enxagueTempo + p_primeiro->centrifugacaoTempo) * 2);
 			font_draw_text(&calibri_36, tempo, botoes[7]->x_location + 20, botoes[7]->y_location + 20 + (36 * 2), 1); // + 36 sempre -> \n
-
 		}
 	}
-	
-	
 }
 
-
-
-int main(void)
-{
+int main(void){
 	struct mxt_device device; /* Device data container */
-
+	
 	/* Initialize the USART configuration struct */
 	const usart_serial_options_t usart_serial_options = {
 		.baudrate = USART_SERIAL_EXAMPLE_BAUDRATE,
@@ -514,10 +408,8 @@ int main(void)
 	stdio_serial_init(USART_SERIAL_EXAMPLE, &usart_serial_options);
 
 	printf("\n\rmaXTouch data USART transmitter\n\r");
-
 	ili9488_draw_pixmap(0, 50, 319, 129, &logoImage);
 	delay_ms(1000);
-
 	draw_screen();
 
 	t_ciclo *p_primeiro = initMenuOrder();
@@ -528,17 +420,11 @@ int main(void)
 	unsigned long long cctime = 0;
 	f_rtt_alarme=true;
 	
-	
-
-	update_screen(p_primeiro);
-	
+	update_screen(p_primeiro);	
 	botoes[1]->flag=-1;
-	
 	pio_set_input(BUT_PIO,BUT_PIO_IDX_MASK,PIO_DEFAULT);
 	
-	
-	while (true) {
-		
+	while (true) {	
 		while (pio_get(BUT_PIO,PIO_INPUT,BUT_PIO_IDX_MASK)){
 			ili9488_set_foreground_color(COLOR_CONVERT(COLOR_RED));
 			ili9488_draw_filled_rectangle(0, 0, ILI9488_LCD_WIDTH - 1, ILI9488_LCD_HEIGHT - 1);
@@ -584,9 +470,6 @@ int main(void)
 			}
 		}
 		
-		
-		
-
 		if ((ftime > cctime || botoes[2]->flag > 0)) {
 			if (botoes[2]->flag < 0) botoes[2]->flag = 1;
 			if (started == 0) {
@@ -615,11 +498,7 @@ int main(void)
 					cctime=0;
 					ftime=0;
 				}
-				
-
 			}
-
-
 		}
 		else {
 			//if (botoes[0]->flag > 0)font_draw_text(&calibri_36, p_primeiro->nome, (20+80), 20, 1);
@@ -627,19 +506,13 @@ int main(void)
 				botoes[1]->flag = -1;
 				p_primeiro = p_primeiro->previous;
 				update_screen(p_primeiro);
-
 			}
 			if (botoes[3]->flag > 0) {
 				botoes[3]->flag = -1;
 				p_primeiro = p_primeiro->next;
 				update_screen(p_primeiro);
-
 			}
-
-
-
 		}
 	}
-
 	return 0;
 }
