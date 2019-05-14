@@ -43,6 +43,8 @@ struct ili9488_opt_t g_ili9488_display_opt;
 #define BUT_PIO_IDX 11
 #define BUT_PIO_IDX_MASK (1u << BUT_PIO_IDX)
 
+#define ID_ENXAGUE 5
+
 
 t_ciclo *initMenuOrder() {
 
@@ -554,7 +556,7 @@ int main(void)
 			mxt_debounce(&device);
 		}
 		
-		if (p_primeiro->id==5){
+		if (p_primeiro->id==ID_ENXAGUE){
 			if (botoes[4]->flag>0){
 				
 				p_primeiro->heavy=!(p_primeiro->heavy);
