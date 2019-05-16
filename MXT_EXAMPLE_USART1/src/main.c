@@ -35,9 +35,37 @@
 #define BUT_PIO_ID 10
 #define BUT_PIO_IDX 11
 #define BUT_PIO_IDX_MASK (1u << BUT_PIO_IDX)
-#define ID_ENXAGUE 5
+#define ID_CUSTOM 5
 
 struct ili9488_opt_t g_ili9488_display_opt;
+
+//LISTA DE IMAGENS
+ili9488_color_t* imageLavagens[] = {&daily, &weight, &enxague, &centrifuge, &custom, &fast};
+ili9488_color_t* blockNavegacao[] = {&locked, &unlocked};
+
+typedef struct {
+	int32_t flag;
+	uint32_t x_location;
+	uint32_t y_location;
+	uint32_t height;
+	uint32_t width;
+	ili9488_color_t* image[];
+} botao;
+
+//480x320
+//flag | x | y | altura | largura | endereço da imagem
+const botao b1 = { 1, 0, 0, 80, 240, &lavagens };
+const botao b2 = { 1,0,80,80,107, &previous };
+const botao b3 = { -1,107,80,80,106, &play };
+const botao b4 = { 1,213,80,80,107, &next };
+const botao b5 = { 1,0,160,160,160, &lavagens }; //pesado
+const botao b6 = { 1,160,160,160,160, &lavagens }; //bolhas
+const botao b7 = { -1,0,320,160,160, &lavagens }; //rpm
+const botao b8 = { 1,160,320,160,160, &lavagens }; //tempo total
+const botao b9 = { -1,240,0,80,80, &lavagens }; // LOCKED/UNLOCKED
+
+botao* botoes[] = {&b1, &b2, &b3, &b4, &b5, &b6, &b7, &b8, &b9};
+
 
 t_ciclo *initMenuOrder() {
 
@@ -179,33 +207,6 @@ uint32_t convert_axis_system_y(uint32_t touch_x) {
 	// saida: 0 - 320
 	return ILI9488_LCD_HEIGHT * touch_x / 4096;
 }
-
-//LISTA DE IMAGENS
-ili9488_color_t* imageLavagens[] = {&daily, &weight, &enxague, &centrifuge, &custom, &fast};
-ili9488_color_t* blockNavegacao[] = {&locked, &unlocked};
-
-typedef struct {
-	int32_t flag;
-	uint32_t x_location;
-	uint32_t y_location;
-	uint32_t height;
-	uint32_t width;
-	ili9488_color_t* image[];
-} botao;
-
-//480x320
-//flag | x | y | altura | largura | endereço da imagem
-const botao b1 = { 1, 0, 0, 80, 240, &lavagens };
-const botao b2 = { 1,0,80,80,107, &previous };
-const botao b3 = { -1,107,80,80,106, &play };
-const botao b4 = { 1,213,80,80,107, &next };
-const botao b5 = { 1,0,160,160,160, &lavagens }; //pesado
-const botao b6 = { 1,160,160,160,160, &lavagens }; //bolhas
-const botao b7 = { -1,0,320,160,160, &lavagens }; //rpm
-const botao b8 = { 1,160,320,160,160, &lavagens }; //tempo total
-const botao b9 = { -1,240,0,80,80, &lavagens }; // LOCKED/UNLOCKED
-
-botao* botoes[] = {&b1, &b2, &b3, &b4, &b5, &b6, &b7, &b8, &b9};
 
 const int num_botoes = 9;
 volatile Bool f_rtt_alarme = false;
@@ -442,14 +443,13 @@ int main(void){
 			mxt_debounce(&device);
 		}
 		
-		if (p_primeiro->id==ID_ENXAGUE){
+		if (p_primeiro->id==ID_CUSTOM){
 			if (botoes[4]->flag>0){
-				
 				p_primeiro->heavy=!(p_primeiro->heavy);
 				botoes[4]->flag=-1;
-				update_screen(p_primeiro);
-				
+				update_screen(p_primeiro);	
 			}
+
 			if (botoes[5]->flag>0){
 				
 				if(p_primeiro->bubblesOn) {
@@ -458,15 +458,14 @@ int main(void){
 					p_primeiro->bubblesOn=!(p_primeiro->bubblesOn);
 				}
 				botoes[5]->flag=-1;
-				update_screen(p_primeiro);
-				
+				update_screen(p_primeiro);	
 			}
+			
 			if (botoes[6]->flag>0){
 				p_primeiro->centrifugacaoRPM+=100;
 				p_primeiro->centrifugacaoRPM%=1300;
 				botoes[6]->flag=-1;
 				update_screen(p_primeiro);
-				
 			}
 		}
 		
@@ -501,7 +500,6 @@ int main(void){
 			}
 		}
 		else {
-			//if (botoes[0]->flag > 0)font_draw_text(&calibri_36, p_primeiro->nome, (20+80), 20, 1);
 			if (botoes[1]->flag > 0) {
 				botoes[1]->flag = -1;
 				p_primeiro = p_primeiro->previous;
